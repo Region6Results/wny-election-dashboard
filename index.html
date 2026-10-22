@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>WNY Election Night Dashboard (Prototype)</title>
+<style>
+:root{--bg:#f4f6f8;--cd:#fff;--tx:#1b1f24;--mu:#5d6772;--bd:#dde1e6;--D:#2563b0;--R:#c0392b;--O:#7a8794;--ok:#2e7d4f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181d;--cd:#1d232a;--tx:#e8ebef;--mu:#9aa5b1;--bd:#2f3740;--D:#6aa3ee;--R:#ef7b6e;--O:#8b97a4;--ok:#5fc08a}}
+:root[data-theme="dark"]{--bg:#14181d;--cd:#1d232a;--tx:#e8ebef;--mu:#9aa5b1;--bd:#2f3740;--D:#6aa3ee;--R:#ef7b6e;--O:#8b97a4;--ok:#5fc08a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:1100px;margin:0 auto;padding:14px}
+h1{font-size:20px;margin:0 0 4px}.sub{color:var(--mu);font-size:13px}
+.ban{background:#fff3cd;color:#664d03;border:1px solid #e6cf80;border-radius:8px;padding:8px 12px;margin:10px 0;font-size:13px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:8px 0;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:2}
+.tabs button{border:1px solid var(--bd);background:var(--cd);color:var(--tx);padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;font:inherit}
+.tabs button.on{background:var(--D);border-color:var(--D);color:#fff}
+.note{color:var(--mu);font-size:13px;margin:4px 0 12px}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:12px 14px}
+.card h3{margin:0;font-size:16px}.cs{color:var(--mu);font-size:12px;margin-bottom:6px}
+.ed{font-size:12px;color:var(--mu);margin:6px 0 3px}.ed input{width:70px}
+.br{height:7px;background:var(--bd);border-radius:4px;overflow:hidden}.br i{display:block;height:100%}
+.cr{margin:9px 0}.nm{display:flex;align-items:center;gap:6px;font-weight:600}.nm small{color:var(--mu);font-weight:400}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.D{background:var(--D)}.R{background:var(--R)}.O{background:var(--O)}.ok{background:var(--ok)}
+.vt{display:flex;justify-content:space-between;align-items:center;margin:2px 0 3px}
+.vt input{width:100px;text-align:right}.pc{font-weight:700}
+input{font:inherit;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:3px 6px}
+.mg{font-size:13px;margin-top:8px;font-weight:600}
+details{margin-top:8px}summary{cursor:pointer;color:var(--D);font-size:13px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:6px}
+th,td{padding:4px 6px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}
+tr.t td{font-weight:700}
+.foot{color:var(--mu);font-size:12px;margin:18px 0 8px}
+</style></head><body><div class="w">
+<h1>Western NY Election Night Dashboard</h1>
+<div class="sub">General Election · November 3, 2026</div>
+<div class="ban"><b>PROTOTYPE.</b> All numbers below are made-up sample data to show the layout. Local race cards (Erie, Monroe, Niagara) accept typed-in numbers.</div>
+<div class="tabs" id="tabs"></div><div class="note" id="note"></div><div class="g" id="main"></div>
+<div class="foot">Votes combine all party lines for each candidate. “EDs reporting” counts election districts (precincts) with results in, not ballots, so absentee and affidavit ballots counted later are not reflected. * = incumbent.</div>
+</div>
+<script>
+const $=s=>document.querySelector(s),sum=a=>a.reduce((x,y)=>x+y,0),fm=n=>Math.round(n).toLocaleString();
+const mk=s=>()=>(s=(s*1664525+1013904223)>>>0)/4294967296;
+const hs=t=>{let h=7;for(const c of t)h=(h*31+c.charCodeAt(0))>>>0;return h};
+const C14="Allegany,Cattaraugus,Chautauqua,Erie,Genesee,Livingston,Monroe,Niagara,Ontario,Orleans,Steuben,Wayne,Wyoming,Yates".split(",");
+const S=[];
+function R(tab,t,cs,k,m,sub){
+ const r={id:S.length,tab,t,m,k,sub:sub||(k?k.join(", "):""),c:cs.split("/").map(x=>{const[n,p,l,i]=x.split("|");return{n,p,l,i}})};
+ const q=mk(hs(t)),lean=.38+q()*.24,n=r.c.length;
+ r.rows=(k||[t]).map(kk=>{const tot=Math.round(15+q()*70),rep=Math.round(tot*(.5+q()*.5)),vv=rep*(m?50+q()*50:90+q()*70),th=n>2?.03:0,d=Math.min(.9,Math.max(.1,lean+(q()-.5)*.2));
+  return{k:kk,e:[rep,tot],v:n>2?[vv*(1-th)*d,vv*(1-th)*(1-d),vv*th].map(Math.round):[vv*d,vv*(1-d)].map(Math.round)}});
+ if(tab=="gc"&&t=="Governor"){const f=4.4+q()*.4;r.v=r.rows[0].v.map((_,i)=>Math.round(sum(r.rows.map(x=>x.v[i]))*f));r.e=[9250,12853]}
+ else{r.v=r.c.map((_,i)=>sum(r.rows.map(x=>x.v[i])));r.e=[sum(r.rows.map(x=>x.e[0])),sum(r.rows.map(x=>x.e[1]))]}
+ S.push(r);return r}
+const T=r=>(r.tg=1,r);
+// Governor & Congress
+T(R("gc","Governor","Kathy Hochul|D|D·WF/Bruce Blakeman|R|R·C·VA",C14,0,"Statewide total; table shows targeted counties"));
+R("gc","NY-23","Aaron Gies|D|D·W/Nicholas Langworthy|R|R·C",0,0,"Congressional District 23");
+R("gc","NY-24","Alissa Ellman|D|D·W/Claudia Tenney|R|R·C",0,0,"Congressional District 24 (litigation pending)");
+R("gc","NY-25","Joseph Morelle|D|D·W/Virginia McIntyre|R|R·C",0,0,"Congressional District 25");
+R("gc","NY-26","Timothy Kennedy|D|D/Dennis Hannon|R|R·C",0,0,"Congressional District 26");
+// Senate
+R("sen","SD54","Michael Mills|D|D/Pamela Helming|R|R·C",["Livingston","Monroe","Ontario","Wayne"]);
+T(R("sen","SD55","Samra Brouk|D|D·W/Chris Brown|R|R·C",["Monroe"]));
+T(R("sen","SD56","Jeremy Cooney|D|D·W/Orlando Rivera|R|R·C",["Monroe"]));
+R("sen","SD57","Victoria Guite-Williams|D|D·W/George Borrello|R|R·C",["Allegany","Cattaraugus","Chautauqua","Genesee","Wyoming"]);
+R("sen","SD62","Thomas Arida|D|D·W/Robert Ortt|R|R·C",["Monroe","Niagara","Orleans"]);
+T(R("sen","SD63","April McCants-Baskin|D|D·W/Geoffrey Szymanski|R|R·C",["Erie"]));
+// Assembly
+R("asm","AD131","Phillip Fleming|D|D/Mark Benjamin|R|R·C",["Broome","Cayuga","Chenango","Cortland","Madison","Ontario","Seneca"]);
+R("asm","AD133","Gladys Flores|D|D/Andrea Bailey|R|R·C",["Livingston","Monroe","Ontario","Steuben","Wyoming"]);
+R("asm","AD134","Kurt Vanwuyckhuyse|D|D·W/Josh Jensen|R|R·C",["Monroe"]);
+T(R("asm","AD135","Jen Lunsford|D|D·W/Kalinda Washington|R|R·C",["Monroe"]));
+R("asm","AD136","Sarah Clark|D|D·W/Clianda Florence|R|R·C",["Monroe"]);
+R("asm","AD137","Demond Meeks|D|D·W/Dave Ferris|R|R·C/Mercedes Vazquez-Simmons|O|MSC",["Monroe"]);
+R("asm","AD138","Harry Bronson|D|D·W/Tracy Diflorio|R|R",["Monroe"]);
+R("asm","AD140","William Conrad|D|D·W/Mohammed Faisal|R|R",["Erie","Niagara"]);
+T(R("asm","AD142","Patrick Burke|D|D·W/Gary Dickson|R|R·C",["Erie"]));
+T(R("asm","AD143","Ryan Taughrin|D|D·W/Patrick Chludzinski|R|R·C",["Erie"]));
+R("asm","AD144","Donna Dye Sholk|D|D·W/Paul Bologna|R|R·C",["Erie","Niagara"]);
+T(R("asm","AD145","Nathan McMurray|D|D/Becky Wydysh|R|R·C",["Erie","Niagara"]));
+R("asm","AD146","Karen McMahon|D|D/Terence McGuire|R|R·C",["Erie"]);
+T(R("asm","AD149","Adam Bojak|D|D·W/Frank Bogulski|R|R·C",["Erie"]));
+R("asm","AD150","Thomas Carle|D|D·W/Andrew Molitor|R|R·C",["Chautauqua","Erie"]);
+// Erie
+T(R("erie","County Clerk","Steve Meyer|D|D·W/Mickey Kearns|R|R·C|*",0,1,"Erie County"));
+R("erie","Legislature LD5","Jeanne Vinal|D|D·W|*/Christina Coyle-Lenz|R|R·C",0,1,"Erie County");
+R("erie","Legislature LD9","John Gilmour|D|D·C|*/David Denz|R|R",0,1,"Erie County");
+// Monroe (Greece)
+R("mon","Greece Council W1","Ryan McDonald|D|D·W/David DiPonzio|R|R·C|*",0,1,"Town of Greece");
+R("mon","Greece Council W2","Frank Femia|D|D·W/Spencer Bernard|R|R·C|*",0,1,"Town of Greece");
+R("mon","Greece Council W3","Amorette Miller|D|D·W|*/Megan Ferra|R|R·C·I",0,1,"Town of Greece");
+// Niagara
+[["LD3","Matthew Chavez|D|D·W/Chris McKimmie|R|R·C|*"],["LD4","Jeffrey Elder|D|D·W|*/Sean Mapp|R|R·C"],["LD5 (open)","Johnny Parks|D|D·W/Russell Petrozzi|R|R·C"],["LD6","Sam Farruggia|D|D·W|*/Timothy Huether|R|R·C"],["LD7","Doug Mooradian|D|D·W/Jesse Gooch|R|R·C|*"],["LD8","Matt Kennedy|D|D·W/Richard Andres|R|R·C|*"],["LD9","Timothy Osborne|D|D/Randy Brandt|R|R·C|*"],["LD11","Bryan Thompson|D|D/Tony Nemi|R|R·C|*"],["LD12","Carla Speranza|D|D·W|*/James Slowey|R|R·C"],["LD13","Jocelyn Welton|D|D·W/Rick Abbott|R|R·C|*"],["LD15","Maria Fabrizio|D|D·W/Michael Hill|R|R·C|*"]]
+ .forEach(([a,b])=>R("nia","Legislature "+a,b.replace(/\|\*/g,"|*"),0,1,"Niagara County"));
+const TABS=[["tg","Targeted","Priority races across all tabs."],["gc","Governor & Congress","Governor: statewide total plus targeted-county breakdown."],["sen","Senate","Counties show only the portion inside each district."],["asm","Assembly","Counties show only the portion inside each district."],["erie","Erie","Typed-in results (sample numbers shown)."],["mon","Monroe","Greece town council wards, typed-in results (sample numbers shown)."],["nia","Niagara","County Legislature, typed-in results (sample numbers shown)."]];
+function tbl(r){if(!r.k||r.k.length<2)return"";
+ const h=r.c.map(c=>`<th>${c.n.split(" ").pop()}</th>`).join(""),b=r.rows.map(x=>`<tr><td>${x.k}</td><td>${x.e[0]}/${x.e[1]}</td>${x.v.map(v=>`<td>${fm(v)}</td>`).join("")}</tr>`).join("");
+ const t=r.c.map((_,i)=>sum(r.rows.map(x=>x.v[i])));
+ return`<details><summary>By county</summary><div class="tw"><table><tr><th>County</th><th>EDs</th>${h}</tr>${b}<tr class="t"><td>${r.tab=="gc"&&r.t=="Governor"?"14-county total":"Total"}</td><td>${sum(r.rows.map(x=>x.e[0]))}/${sum(r.rows.map(x=>x.e[1]))}</td>${t.map(v=>`<td>${fm(v)}</td>`).join("")}</tr></table></div></details>`}
+function card(r){
+ const ed=r.m?`EDs reporting <input type="number" data-e="0" value="${r.e[0]}"> of <input type="number" data-e="1" value="${r.e[1]}">`:`EDs reporting <b>${fm(r.e[0])}</b> of <b>${fm(r.e[1])}</b>`;
+ const rows=r.c.map((c,i)=>`<div class="cr"><div class="nm"><span class="dot ${c.p}"></span>${c.n}${c.i?"*":""} <small>${c.l}</small></div><div class="vt">${r.m?`<input type="number" min="0" data-i="${i}" value="${r.v[i]}">`:`<b>${fm(r.v[i])}</b>`}<span class="pc"></span></div><div class="br"><i class="${c.p}"></i></div></div>`).join("");
+ return`<section class="card" data-r="${r.id}"><h3>${r.t}</h3><div class="cs">${r.sub}</div><div class="ed">${ed} (<span class="edp"></span>)</div><div class="br"><i class="ok edb"></i></div>${rows}<div class="mg"></div>${tbl(r)}</section>`}
+function upd(c,r){
+ const T=sum(r.v)||1,p=r.e[1]?100*r.e[0]/r.e[1]:0;
+ c.querySelector(".edp").textContent=p.toFixed(0)+"%";c.querySelector(".edb").style.width=Math.min(100,p)+"%";
+ c.querySelectorAll(".cr").forEach((x,i)=>{x.querySelector(".pc").textContent=(100*r.v[i]/T).toFixed(1)+"%";x.querySelector(".br i").style.width=100*r.v[i]/T+"%"});
+ const o=r.v.map((v,i)=>[v,i]).sort((a,b)=>b[0]-a[0]),d=o[0][0]-o[1][0];
+ c.querySelector(".mg").textContent=d?`${r.c[o[0][1]].n} leads by ${fm(d)} votes (${(100*d/T).toFixed(1)} pts)`:"Tied"}
+function show(k){
+ const t=TABS.find(x=>x[0]==k);$("#note").textContent=t[2];
+ const L=k=="tg"?S.filter(r=>r.tg):S.filter(r=>r.tab==k);
+ $("#main").innerHTML=L.map(card).join("");
+ document.querySelectorAll(".card").forEach(c=>upd(c,S[c.dataset.r]));
+ document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.k==k))}
+$("#tabs").innerHTML=TABS.map(t=>`<button data-k="${t[0]}">${t[1]}</button>`).join("");
+$("#tabs").onclick=e=>e.target.dataset.k&&show(e.target.dataset.k);
+document.addEventListener("input",e=>{const el=e.target,c=el.closest(".card");if(!c||el.tagName!="INPUT")return;const r=S[c.dataset.r];
+ if(el.dataset.i!=null)r.v[el.dataset.i]=+el.value||0;if(el.dataset.e!=null)r.e[el.dataset.e]=+el.value||0;upd(c,r)});
+show("tg");
+</script></body></html>
