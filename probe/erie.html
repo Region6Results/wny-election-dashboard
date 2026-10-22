@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+
+<html>
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" /><meta name="author" content="Copyright 2012-2016 SageSmith Consulting, LLC" /><meta name="description" content="Election Night Results at your fingertips: any device, anywhere!" /><meta name="keywords" content="Election Results, Vote, Results, Elections, Election Night" />
+
+    <base href="https://erie.resultscaster.com/" />
+
+    <meta property="og:type" content="website" /><meta property="og:title" content="Live Election Results" /><meta property="og:description" content="Live streaming broadcast of election results, anywhere on any device." /><link rel="image_src" href="images/ogImage.png" /><meta property="og:image" content="images/ogImage.png" /><meta property="og:site_name" content="ResultsCaster" />
+
+     <!-- Google CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet" type="text/css" /><link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" /><link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" /> 
+
+    <!--[if lt IE 8]><!-->
+    <link href="https://www.electionhub.com/fonts/ie7.css" rel="stylesheet" type="text/css" />
+	<script src="https://www.electionhub.com/fonts/ie7.js"></script>    
+	<!--<![endif]-->
+
+    
+
+    
+    
+        
+
+        
+        <!-- Icon Fonts -->
+        <link href="icons/ResultsCaster.css" rel="stylesheet" />
+
+        <link href="build/ui.rcaWorkspace.css" rel="stylesheet" />
+
+        
+    
+        
+
+            
+        
+    
+    <link href="build/ui.InputForm.css" rel="stylesheet" />
+    <link href="build/ui.Feed.css" rel="stylesheet" />
+
+
+
+        
+
+<title>
+	Results Feed
+</title></head>
+<body>
+
+
+    <form method="post" action="./feed.aspx?usersessionid=none" id="frmMain">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTIwNjE1MTY4MDIPZBYCZg9kFgJmD2QWBgIBD2QWCgIBDxYCHgdjb250ZW50BS1Db3B5cmlnaHQgMjAxMi0yMDE2IFNhZ2VTbWl0aCBDb25zdWx0aW5nLCBMTENkAgIPFgIfAAVARWxlY3Rpb24gTmlnaHQgUmVzdWx0cyBhdCB5b3VyIGZpbmdlcnRpcHM6IGFueSBkZXZpY2UsIGFueXdoZXJlIWQCAw8WAh8ABTpFbGVjdGlvbiBSZXN1bHRzLCBWb3RlLCBSZXN1bHRzLCBFbGVjdGlvbnMsIEVsZWN0aW9uIE5pZ2h0ZAIEDxUBH2h0dHBzOi8vZXJpZS5yZXN1bHRzY2FzdGVyLmNvbS9kAhIPZBYEAgMPFgIeB1Zpc2libGVoZAIFDxYCHwFnZAIDD2QWAgIPD2QWBAIBDxYCHwFnZAIDDxYCHwFoZAIFD2QWBAIBDxYCHwFoZAIDDxYCHwFnZGRZmMaLP4sKbyGWZxo+S1bc12JTfw==" />
+</div>
+
+
+<script type="text/javascript">
+//<![CDATA[
+var plex_settings = {
+     eifServer: "https://erie.electionhub.com",
+     motherShip: "https://erie.electionhub.com",
+     subdomain: "erie",
+     appKey: "rca",
+     authCookie: "rca-auth",
+     staticDomain: "https://www.ResultsCaster.com",
+     MotherShip: "https://{0}.electionhub.com",
+     ReportServer: "https://reporting.electionhub.com/prod/apps/rca/reports",
+     GeoServer: "https://electionstreet.com",
+     Domain: "https://{0}.ResultsCaster.com",
+     mapsApiKey: "",
+     analyticsKey: "UA-83405407-1",
+     PlexCoreVersion: "3.0.0.0"
+};
+//]]>
+</script>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="94380433" />
+</div>
+        <header>
+            <a id="nav-toggle" href="javascript:void(0);"><span class="rca-icon-menu"></span></a>
+            
+
+    
+    <img id="badge-image" src="https://eif.electionhub.com/client/production/images/erie/badge.png" />
+    <h1>Erie County Board of Elections</h1>
+    <h2>Election Results</h2>
+
+
+     
+        </header>
+
+        <div id="nav-shadow"></div>
+
+        <nav>
+            <div id="navigation-top">
+                <a id="nav-close" href="javascript:void(0);"><span class="rca-icon-cross2"></span></a>
+                
+
+    
+
+
+    
+            </div>
+            <div id="nav-wrapper">
+                <div id="navigation-main">
+                    
+
+    
+
+
+  
+                </div>
+            </div>
+            <div id="navigation-bottom">
+                
+
+    
+
+
+  
+            </div>
+        </nav>
+
+        <main>
+            <ul id="menu-left">
+                
+
+    
+
+
+    
+            </ul>
+            <div id="title-bar">
+                
+    
+    
+
+    <ul id="view-toggle" class="plx-tabs plx-tabs-two integrated">
+        <li id="current-button" class="tab-button tab-state-active">
+            <a href="#tab-current">
+                <span class="plx-glyph rca-icon-cast"></span>
+                <span class="caption">Current</span>
+            </a> 
+        </li>
+        <li id="archive-button" class="tab-button">
+            <a href="#tab-archive">
+                <span class="plx-glyph rca-icon-books"></span>
+                <span class="caption">Archive</span>
+            </a> 
+        </li>
+    </ul>
+
+
+
+   
+            </div>
+            <ul id="menu-right">
+                
+    
+    
+
+
+    
+            </ul>
+            <div id="content-wrapper">
+                
+
+    
+
+   
+    
+    
+
+    
+    <div id="measuring-stick"></div>
+    <div id="tab-current" class="feed-tab">
+        <p class="plx-block plx-empty-message plx-dynamic-content"></p>
+        <ul id="current-list" class="by-day"></ul>
+    </div>
+
+    <div id="tab-archive" class="feed-tab">
+
+        <ul id="archive-toolbar" class="plx-contextbar">
+            <li class="chron-mode">
+                <select id="ddlYear" tabindex="1"></select>
+                <span class="plx-glyph rca-icon-calendar"></span>
+                <span class="caption">Year</span>
+            </li>
+
+            <li class="standard-button search-mode">
+                <a id="btnToggleChron" href="javascript:void(0);"  tabindex="2">
+                    <span class="plx-glyph rca-icon-calendar"></span>
+                    <span class="caption">By Year</span>
+                </a>    
+            </li>
+
+            <li id="search-box" class="right search-mode" >
+                <input id="txtSearch" type="text" tabindex="5" />
+                <span id="char-counter" class="caption">Search</span>
+
+            </li>
+
+           <li class="standard-button right chron-mode">
+                <a id="btnToggleSearch" href="javascript:void(0);"  tabindex="4">
+                    <span class="plx-glyph rca-icon-search"></span>
+                    <span class="caption">Search</span>
+                </a>
+            </li>
+            
+        </ul>
+
+        <p class="plx-block plx-empty-message plx-dynamic-content"></p>
+
+        <ul id="archive-list" tabindex="6"></ul>
+        <ul id="search-list"  tabindex="7"></ul>
+    </div>
+
+    <div id="loading-cover" class="pop-over">
+        <div class="fancy-spinner">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+ 
+
+    
+            </div>
+        </main>
+        <footer>
+            
+        
+    
+
+
+ 
+        </footer>
+    </form>
+
+
+    
+    <script src="build/script.rcaWorkspace.js" type="text/javascript"></script>
+
+    
+    
+    
+
+
+    
+
+    <script src="build/script.InputForm.js"></script>
+    <script src="build/script.Feed.js" type="text/javascript"></script>
+    <script src="https://eif.electionhub.com/client/production/routing/erie/jquery.eif.js" type="text/javascript"></script>
+
+
+ 
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-83405407-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-83405407-1');
+    </script>
+</body>
+</html>
